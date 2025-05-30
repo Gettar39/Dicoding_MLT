@@ -6,16 +6,16 @@ Kualitas anggur merupakan salah satu faktor utama yang menentukan nilai jual dan
 
 Dengan berkembangnya teknologi analitik dan kecerdasan buatan, khususnya machine learning, kini dimungkinkan untuk memprediksi kualitas anggur berdasarkan parameter fisikokimia yang diukur secara objektif di laboratorium. Parameter tersebut meliputi kadar alkohol, keasaman, pH, kadar gula, sulfur dioksida, dan lainnya, yang dapat dikumpulkan secara efisien tanpa perlu proses sensorik yang kompleks.
 
-Studi terkini menunjukkan bahwa berbagai algoritma machine learning seperti logistic regression, support vector machine, decision tree, dan random forest telah berhasil digunakan dalam sistem deteksi dini diabetes dengan tingkat akurasi yang tinggi. Ini adalah ([Das et al., 2023](https://doi.org/10.1109/IEMENTech60402.2023.10423472)), ([Sinha et al., 2024](https://doi.org/10.1109/ICAAIC60222.2024.10575581)), dan ([Alzboon et al., 2023](https://doi.org/10.3991/ijoe.v19i15.42417)).
+Studi terkini menunjukkan bahwa berbagai algoritma machine learning seperti logistic regression, support vector machine, decision tree, dan random forest telah berhasil digunakan dalam sistem deteksi dini kualitas tinggi dengan tingkat akurasi yang tinggi. Ini adalah ([Das et al., 2023](https://doi.org/10.1109/IEMENTech60402.2023.10423472)), ([Sinha et al., 2024](https://doi.org/10.1109/ICAAIC60222.2024.10575581)), dan ([Alzboon et al., 2023](https://doi.org/10.3991/ijoe.v19i15.42417)).
 
 Salah satu dataset yang sering digunakan untuk penelitian ini adalah Wine Quality Dataset, khususnya untuk anggur merah (, yang berisi data dari pengujian laboratorium terhadap sampel anggur dengan kualitas yang telah diberi label oleh ahli.
 
 Proyek ini bertujuan untuk mengembangkan sistem prediksi kualitas anggur merah menggunakan pendekatan machine learning yang andal, cepat, dan dapat diintegrasikan dalam proses kontrol kualitas pada industri wine.
 
 ### Referensi
-- Das, S., Ghosh, S., Kumar, S., Ganguly, G., & Devi, G. U. (2023). *Diabetes Detection System using Machine Learning*. 2023 7th International Conference on Electronics, Materials Engineering & Nano-Technology (IEMENTech). https://doi.org/10.1109/IEMENTech60402.2023.10423472
-- Sinha, R., Vennela, B. S., & Babu, S. (2024). *Early Diabetes Prediction using Machine Learning Algorithms*. 2024 3rd International Conference on Applied Artificial Intelligence and Computing (ICAAIC). https://doi.org/10.1109/ICAAIC60222.2024.10575581
-- Alzboon, M. S., Al-Batah, M. S., Alqaraleh, M., Abuashour, A., & Bader, A. F. H. (2023). *Early Diagnosis of Diabetes: A Comparison of Machine Learning Methods*. International Journal of Online and Biomedical Engineering (iJOE). https://doi.org/10.3991/ijoe.v19i15.42417
+- Das, S., Ghosh, S., Kumar, S., Ganguly, G., & Devi, G. U. (2023). *kualitas tinggi Detection System using Machine Learning*. 2023 7th International Conference on Electronics, Materials Engineering & Nano-Technology (IEMENTech). https://doi.org/10.1109/IEMENTech60402.2023.10423472
+- Sinha, R., Vennela, B. S., & Babu, S. (2024). *Early kualitas tinggi Prediction using Machine Learning Algorithms*. 2024 3rd International Conference on Applied Artificial Intelligence and Computing (ICAAIC). https://doi.org/10.1109/ICAAIC60222.2024.10575581
+- Alzboon, M. S., Al-Batah, M. S., Alqaraleh, M., Abuashour, A., & Bader, A. F. H. (2023). *Early Diagnosis of kualitas tinggi: A Comparison of Machine Learning Methods*. International Journal of Online and Biomedical Engineering (iJOE). https://doi.org/10.3991/ijoe.v19i15.42417
 
 ---
 
@@ -208,7 +208,7 @@ Dapat dilihat bahwa dataset yang dipakai pada proyek saat ini mengandung data du
 * Fitur seperti **`citric acid`**, **`volatile acidity`**, dan **`chlorides`** tampak memiliki distribusi yang lebih terkonsentrasi.
 ![boxplot](Img/boxplot.png)
 
-Namun, karena tujuan dari proyek ini adalah **deteksi diabetes**, maka outlier **tidak dihapus** karena bisa merepresentasikan kondisi medis yang valid dan penting (misalnya kadar glukosa sangat tinggi atau pasien dengan riwayat keluarga kuat).
+Namun, karena tujuan dari proyek ini adalah **deteksi kualitas tinggi**, maka outlier **tidak dihapus** karena bisa merepresentasikan kondisi medis yang valid dan penting (misalnya kadar glukosa sangat tinggi atau pasien dengan riwayat keluarga kuat).
 
 #### Matriks Korelasi
 
@@ -417,7 +417,7 @@ Karena proyek ini menggunakan **lebih dari satu algoritma**, maka **tuning param
 
 ### Metrik Evaluasi yang Digunakan
 
-Untuk mengevaluasi performa model dalam tugas klasifikasi biner (diabetes atau tidak), digunakan empat metrik utama:
+Untuk mengevaluasi performa model dalam tugas klasifikasi biner (kualitas tinggi atau tidak), digunakan empat metrik utama:
 
 - **Accuracy**  
   Persentase prediksi yang benar dari keseluruhan data.  
@@ -426,24 +426,24 @@ Untuk mengevaluasi performa model dalam tugas klasifikasi biner (diabetes atau t
   ![acc](Img/acc.png)
 
   Di mana:
-  - **TP (True Positive)**: Prediksi positif yang benar (diabetes → diabetes)
-  - **TN (True Negative)**: Prediksi negatif yang benar (tidak diabetes → tidak diabetes)
-  - **FP (False Positive)**: Prediksi positif yang salah (tidak diabetes → diabetes)
-  - **FN (False Negative)**: Prediksi negatif yang salah (diabetes → tidak diabetes)
+  - **TP (True Positive)**: Prediksi positif yang benar (kualitas tinggi → kualitas tinggi)
+  - **TN (True Negative)**: Prediksi negatif yang benar (kualitas rendah → kualitas rendah)
+  - **FP (False Positive)**: Prediksi positif yang salah (kualitas rendah → kualitas tinggi)
+  - **FN (False Negative)**: Prediksi negatif yang salah (kualitas tinggi → kualitas rendah)
 
 - **Precision**  
-  Seberapa tepat model saat memprediksi pasien sebagai penderita diabetes.  
+  Seberapa tepat model saat memprediksi pasien sebagai penderita kualitas tinggi.  
   
   ![prec](Img/prec.png)
 
-  Artinya, dari seluruh kasus yang diprediksi sebagai diabetes, seberapa banyak yang benar-benar diabetes.
+  Artinya, dari seluruh kasus yang diprediksi sebagai kualitas tinggi, seberapa banyak yang benar-benar kualitas tinggi.
 
 - **Recall**  
-  Kemampuan model untuk menemukan semua kasus diabetes yang sebenarnya ada.  
+  Kemampuan model untuk menemukan semua kasus kualitas tinggi yang sebenarnya ada.  
   
   ![recall](Img/recall.png)
 
-  Semakin tinggi recall, semakin sedikit pasien diabetes yang luput dari deteksi (false negative rendah).
+  Semakin tinggi recall, semakin sedikit pasien kualitas tinggi yang luput dari deteksi (false negative rendah).
 
 - **F1-Score**  
   Rata-rata harmonis dari precision dan recall, menyeimbangkan keduanya.  
@@ -464,10 +464,13 @@ Hasil evaluasi dari ketiga model:
 
 ### Pemilihan Model Terbaik
 
-* **Random Forest unggul di seluruh metrik evaluasi** (accuracy, precision, recall, dan F1-score), menjadikannya **pilihan terbaik untuk prediksi kualitas anggur merah**.
-* Nilai **recall yang tinggi (82.5%)** menunjukkan bahwa model ini mampu **mengenali hampir semua sampel anggur berkualitas baik**, yang penting untuk menghindari kegagalan dalam mengidentifikasi produk unggulan selama proses kontrol kualitas.
-* Kombinasi **precision (77.4%) dan F1-score (79.8%)** menunjukkan bahwa model ini **seimbang dan andal**, baik dalam mengidentifikasi anggur berkualitas tinggi maupun menghindari kesalahan dalam klasifikasi, yang sangat berguna bagi produsen dalam menjaga efisiensi dan konsistensi mutu produk tanpa uji rasa manual yang mahal.
 
+
+Berdasarkan hasil evaluasi, model **Random Forest** unggul di semua metrik: **accuracy (0.791), precision (0.774), recall (0.825),** dan **F1-score (0.798)**. Hal ini menjadikannya pilihan terbaik untuk prediksi kualitas anggur merah.
+
+* **Recall yang tinggi (82.5%)** menunjukkan bahwa model ini mampu mengenali sebagian besar sampel anggur berkualitas baik, yang sangat penting untuk **menghindari kesalahan dalam identifikasi produk unggulan** selama proses kontrol kualitas.
+* Kombinasi antara **precision (77.4%)** dan **F1-score (79.8%)** mengindikasikan bahwa model ini **seimbang dan andal**—baik dalam mendeteksi anggur berkualitas tinggi maupun dalam **meminimalkan kesalahan klasifikasi**.
+* Dengan performa ini, **Random Forest sangat cocok digunakan oleh produsen untuk menjaga efisiensi dan konsistensi mutu produk**, tanpa harus selalu mengandalkan proses uji rasa manual yang mahal.
 
 ## Kesimpulan
 
