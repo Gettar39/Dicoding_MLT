@@ -94,19 +94,19 @@ Data columns (total 12 columns):
  8   pH                    1599 non-null   float64
  9   sulphates             1599 non-null   float64
  10  alcohol               1599 non-null   float64
- 11  quality_binary        1599 non-null   int64  
+ 11  quality               1599 non-null   int64  
 dtypes: float64(11), int64(1)
 memory usage: 150.0 KB
 ```
-Dataset ini terdiri dari 1599 entri dan 11 kolom. Semua kolom tidak mengandung nilai yang hilang. Tipe data untuk mayoritas kolom adalah float, kecuali kolom **quality_binary**, yang memiliki tipe data integer.
+Dataset ini terdiri dari 1599 entri dan 11 kolom. Semua kolom tidak mengandung nilai yang hilang. Tipe data untuk mayoritas kolom adalah float, kecuali kolom **quality**, yang memiliki tipe data integer.
 
-|index|fixed acidity|volatile acidity|citric acid|residual sugar|chlorides|free sulfur dioxide|total sulfur dioxide|density|pH|sulphates|alcohol|quality\_binary|
+|index|fixed acidity|volatile acidity|citric acid|residual sugar|chlorides|free sulfur dioxide|total sulfur dioxide|density|pH|sulphates|alcohol|quality|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-|0|7\.4|0\.7|0\.0|1\.9|0\.076|11\.0|34\.0|0\.9978|3\.51|0\.56|9\.4|0|
-|1|7\.8|0\.88|0\.0|2\.6|0\.098|25\.0|67\.0|0\.9968|3\.2|0\.68|9\.8|0|
-|2|7\.8|0\.76|0\.04|2\.3|0\.092|15\.0|54\.0|0\.997|3\.26|0\.65|9\.8|0|
-|3|11\.2|0\.28|0\.56|1\.9|0\.075|17\.0|60\.0|0\.998|3\.16|0\.58|9\.8|0|
-|4|7\.4|0\.7|0\.0|1\.9|0\.076|11\.0|34\.0|0\.9978|3\.51|0\.56|9\.4|0|
+|0|7\.4|0\.7|0\.0|1\.9|0\.076|11\.0|34\.0|0\.9978|3\.51|0\.56|9\.4|5|
+|1|7\.8|0\.88|0\.0|2\.6|0\.098|25\.0|67\.0|0\.9968|3\.2|0\.68|9\.8|5|
+|2|7\.8|0\.76|0\.04|2\.3|0\.092|15\.0|54\.0|0\.997|3\.26|0\.65|9\.8|5|
+|3|11\.2|0\.28|0\.56|1\.9|0\.075|17\.0|60\.0|0\.998|3\.16|0\.58|9\.8|6|
+|4|7\.4|0\.7|0\.0|1\.9|0\.076|11\.0|34\.0|0\.9978|3\.51|0\.56|9\.4|5|
 
 Di atas ini adalah beberapa baris pertama dari dataset **Wine Quality**. Setiap baris merepresentasikan satu sampel anggur merah dengan sejumlah fitur kimia dan fisik seperti keasaman, kadar alkohol, dan kandungan sulfat, yang digunakan untuk memprediksi kualitas anggur.
 
@@ -188,12 +188,8 @@ Baris duplikat:
 
 ```
 
-Dapat dilihat bahwa dataset yang dipakai pada proyek saat ini mengandung data duplikat. Maka kita hapus terlebih Dahulu duplikat yanga ada yang setelah dihapus akan kita pastikan kembali
-```
-Jumlah data setelah menghapus duplikat: 1359
-```
+Dapat dilihat bahwa dataset yang dipakai pada proyek saat ini mengandung data duplikat. Maka nanti akan kita betulkan di Data_Preparation dan kita lanjutkan Dahulu ke understanding berikutnya yang ada dilanjutkan ke tahap pengecekan distribusi data dan pengecekan nilai outlier
 
-Sehingga tahapan proyek dapat dilanjutkan ke tahap pengecekan distribusi data dan pengecekan nilai outlier
 
 ### Analisis Distribusi, Outlier, Korelasi 
 
@@ -217,19 +213,22 @@ Namun, karena tujuan dari proyek ini adalah **deteksi diabetes**, maka outlier *
 #### Matriks Korelasi
 
 ![corr](Img/corr.png)
-* **Fitur `alcohol` memiliki korelasi tertinggi terhadap `quality_binary`** dengan nilai **r = 0.41**, menunjukkan bahwa **semakin tinggi kadar alkohol, cenderung semakin tinggi pula kualitas anggur merah**.
+### **MATRIX KORELASI:**
 
-* Fitur lain yang juga memiliki korelasi **positif** terhadap target (meskipun lemah hingga sedang):
+Fitur **alcohol** memiliki korelasi tertinggi terhadap **quality** dengan nilai **r = 0.48**, menunjukkan bahwa semakin tinggi kadar alkohol, cenderung semakin tinggi pula kualitas anggur merah.
 
-  * `sulphates`: **r = 0.25**
-  * `citric acid`: **r = 0.20**
+Fitur lain yang juga memiliki korelasi positif terhadap target (meskipun lemah hingga sedang):
 
-* Fitur yang menunjukkan korelasi **negatif** terhadap `quality_binary`:
+* **sulphates**: r = 0.25
+* **citric acid**: r = 0.23
 
-  * `volatile acidity`: **r = -0.27**
-  * `density`: **r = -0.16**
-  * `total sulfur dioxide`: **r = -0.14**
-  * `chlorides`: **r = -0.10**
+Fitur yang menunjukkan korelasi negatif terhadap **quality**:
+
+* **volatile acidity**: r = -0.39
+* **total sulfur dioxide**: r = -0.19
+* **density**: r = -0.17
+* **chlorides**: r = -0.13
+
 
 
 Langkah-langkah ini penting untuk mengidentifikasi kebutuhan data cleaning dan normalisasi pada tahap selanjutnya.
@@ -237,6 +236,32 @@ Langkah-langkah ini penting untuk mengidentifikasi kebutuhan data cleaning dan n
 ## Data Preparation
 
 Tahap ini bertujuan untuk menyiapkan data sebelum digunakan dalam proses pelatihan model machine learning. Berdasarkan hasil eksplorasi awal (EDA) di tahap Data Understanding, terdapat beberapa hal yang perlu diperhatikan dalam proses ini, seperti distribusi fitur yang tidak seragam, dan perbedaan skala antar fitur pada tahap Data Understanding. Oleh karena itu tahap ini akan dilanjutkan dengan proses normalisasi, dan splitting data.
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 1599 entries, 0 to 1598
+Data columns (total 12 columns):
+ #   Column                Non-Null Count  Dtype  
+---  ------                --------------  -----  
+ 0   fixed acidity         1599 non-null   float64
+ 1   volatile acidity      1599 non-null   float64
+ 2   citric acid           1599 non-null   float64
+ 3   residual sugar        1599 non-null   float64
+ 4   chlorides             1599 non-null   float64
+ 5   free sulfur dioxide   1599 non-null   float64
+ 6   total sulfur dioxide  1599 non-null   float64
+ 7   density               1599 non-null   float64
+ 8   pH                    1599 non-null   float64
+ 9   sulphates             1599 non-null   float64
+ 10  alcohol               1599 non-null   float64
+ 11  quality_binary        1599 non-null   int64  
+dtypes: float64(11), int64(1)
+memory usage: 150.0 KB
+### Transformasi data
+Kolom **quality** diubah menjadi kolom biner **quality_binary** dengan nilai 0 untuk kualitas rendah (≤5) dan 1 untuk kualitas tinggi (>5). Hal ini dilakukan untuk menyederhanakan masalah klasifikasi menjadi biner, sehingga model dapat fokus membedakan kualitas baik dan buruk.
+
+'Jumlah data setelah menghapus duplikat: 1359'
+
+Data duplikat dihapus menggunakan df.drop_duplicates() untuk memastikan bahwa tidak ada baris yang identik dalam dataset. Setelah penghapusan, jumlah data berkurang dari 1.599 menjadi 1.359 baris.
 
 ### Normalisasi Data
 Skala antar fitur sangat bervariasi, misalnya kadar `total sulfur dioxide` berkisar antara 6 hingga 289, sementara `citric acid` hanya berkisar 0.19 hingga 1. Untuk menghindari bias model terhadap fitur dengan skala besar, dilakukan proses **normalisasi menggunakan StandardScaler**.
@@ -369,10 +394,10 @@ Evaluasi dilakukan menggunakan empat metrik utama klasifikasi:
 Hasil evaluasi model sebagai berikut:
 
 | Model               | Accuracy | Precision | Recall | F1-Score |
-|---------------------|----------|-----------|--------|----------|
-| **Logistic Regression** | **0.753** | **0.649**   | **0.673** | **0.661**  |
-| Random Forest       | 0.727   | 0.618     | 0.618  | 0.618    |
-| SVM                 | 0.727    | 0.633     | 0.564  | 0.596    |
+|--------------------|----------|-----------|--------|----------|
+| SVM                | 0.593    | 0.561     | **0.876**  | 0.685    |
+| **Random Forest**      | **0.791**    | **0.774**     | 0.825  | **0.798**    |
+| Logistic Regression| 0.750    | 0.741     | 0.774  | 0.757    |
 
 ### Pemilihan Model Terbaik
 
