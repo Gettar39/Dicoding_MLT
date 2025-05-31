@@ -283,10 +283,14 @@ df.describe()
 ```python
 # Normalisasi Data
 scaler = StandardScaler()
-features = df.drop(columns=['Outcome'])
+# Kolom fitur yang perlu dinormalisasi (kecuali kolom target 'quality_binary')
+features = df.drop(columns=['quality_binary'])
+# Normalisasi fitur
 scaled_features = scaler.fit_transform(features)
+# Menyusun DataFrame baru setelah normalisasi
 scaled_df = pd.DataFrame(scaled_features, columns=features.columns)
-scaled_df['Outcome'] = df['Outcome']
+# Menambahkan kolom target 'quality_binary'
+scaled_df['quality_binary'] = df['quality_binary']
 ```
 |index|fixed acidity|volatile acidity|citric acid|residual sugar|chlorides|free sulfur dioxide|total sulfur dioxide|density|pH|sulphates|alcohol|quality_binary|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
