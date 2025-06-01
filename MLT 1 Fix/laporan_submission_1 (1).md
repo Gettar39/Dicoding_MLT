@@ -236,7 +236,7 @@ Langkah-langkah ini penting untuk mengidentifikasi kebutuhan data cleaning dan n
 ## Data Preparation
 
 Tahap ini bertujuan untuk menyiapkan data sebelum digunakan dalam proses pelatihan model machine learning. Berdasarkan hasil eksplorasi awal (EDA) di tahap Data Understanding, terdapat beberapa hal yang perlu diperhatikan dalam proses ini, seperti distribusi fitur yang tidak seragam, dan perbedaan skala antar fitur pada tahap Data Understanding. Oleh karena itu tahap ini akan dilanjutkan dengan proses normalisasi, dan splitting data.
-
+```
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 1599 entries, 0 to 1598
 Data columns (total 12 columns):
@@ -256,8 +256,9 @@ Data columns (total 12 columns):
  11  quality_binary        1599 non-null   int64  
 dtypes: float64(11), int64(1)
 memory usage: 150.0 KB
+```
 ### Transformasi data
-Kolom **quality** diubah menjadi kolom biner **quality_binary** dengan nilai 0 untuk kualitas rendah (≤5) dan 1 untuk kualitas tinggi (>5). Hal ini dilakukan untuk menyederhanakan masalah klasifikasi menjadi biner, sehingga model dapat fokus membedakan kualitas baik dan buruk.
+Kolom **quality** diubah menjadi kolom biner **quality_binary** dengan nilai 0 untuk kualitas rendah (≤5) dan 1 untuk kualitas tinggi (=>6). Hal ini dilakukan untuk menyederhanakan masalah klasifikasi menjadi biner, sehingga model dapat fokus membedakan kualitas baik dan buruk.
 
 'Jumlah data setelah menghapus duplikat: 1359'
 
@@ -292,13 +293,17 @@ scaled_df = pd.DataFrame(scaled_features, columns=features.columns)
 # Menambahkan kolom target 'quality_binary'
 scaled_df['quality_binary'] = df['quality_binary']
 ```
-|index|fixed acidity|volatile acidity|citric acid|residual sugar|chlorides|free sulfur dioxide|total sulfur dioxide|density|pH|sulphates|alcohol|quality_binary|
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|0|-0.5244|0.9320|-1.3933|-0.4612|-0.2456|-0.4686|-0.3840|0.5840|1.2919|-0.5786|-0.9544|0.0|
-|1|-0.2941|1.9158|-1.3933|0.0567|0.2001|0.8720|0.6041|0.0487|-0.7084|0.1248|-0.5846|0.0|
-|2|-0.2941|1.2599|-1.1886|-0.1653|0.0785|-0.0855|0.2148|0.1558|-0.3212|-0.0510|-0.5846|0.0|
-|3|1.6641|-1.3635|1.4717|-0.4612|-0.2659|0.1060|0.3945|0.6911|-0.9665|-0.4613|-0.5846|1.0|
-|4|-0.5244|0.7134|-1.3933|-0.5351|-0.2659|-0.2770|-0.2044|0.5840|1.2919|-0.5786|-0.9544|NaN|
+
+| index | fixed acidity | volatile acidity | citric acid | residual sugar | chlorides | free sulfur dioxide | total sulfur dioxide | density | pH      | sulphates | alcohol | quality\_binary |
+| ----- | ------------- | ---------------- | ----------- | -------------- | --------- | ------------------- | -------------------- | ------- | ------- | --------- | ------- | --------------- |
+| 0     | -0.5244       | 0.9320           | -1.3933     | -0.4612        | -0.2456   | -0.4686             | -0.3840              | 0.5840  | 1.2919  | -0.5786   | -0.9544 | 0               |
+| 1     | -0.2941       | 1.9158           | -1.3933     | 0.0567         | 0.2001    | 0.8720              | 0.6041               | 0.0487  | -0.7084 | 0.1248    | -0.5846 | 0               |
+| 2     | -0.2941       | 1.2599           | -1.1886     | -0.1653        | 0.0785    | -0.0855             | 0.2148               | 0.1558  | -0.3212 | -0.0510   | -0.5846 | 0               |
+| 3     | 1.6641        | -1.3635          | 1.4717      | -0.4612        | -0.2659   | 0.1060              | 0.3945               | 0.6911  | -0.9665 | -0.4613   | -0.5846 | 1               |
+| 5     | -0.5244       | 0.7134           | -1.3933     | -0.5351        | -0.2659   | -0.2770             | -0.2044              | 0.5840  | 1.2919  | -0.5786   | -0.9544 | 0               |
+
+
+
 
 
 ### Splitting Dataset
@@ -395,19 +400,29 @@ Evaluasi dilakukan menggunakan empat metrik utama klasifikasi:
 - **Recall**: Proporsi kasus positif yang berhasil dikenali.
 - **F1-Score**: Rata-rata harmonis antara precision dan recall.
 
-Hasil evaluasi model sebagai berikut:
 
-| Model               | Accuracy | Precision | Recall | F1-Score |
-|--------------------|----------|-----------|--------|----------|
-| SVM                | 0.593    | 0.561     | **0.876**  | 0.685    |
-| **Random Forest**      | **0.791**    | **0.774**     | 0.825  | **0.798**    |
-| Logistic Regression| 0.750    | 0.741     | 0.774  | 0.757    |
+### 📊 Hasil Evaluasi Model
 
-### Pemilihan Model Terbaik
+| Model               | Accuracy   | Precision  | Recall     | F1-Score   |
+| ------------------- | ---------- | ---------- | ---------- | ---------- |
+| Logistic Regression | 0.7647     | 0.7589     | 0.7810     | 0.7698     |
+| **Random Forest**   | **0.7904** | **0.7778** | **0.8175** | **0.7972** |
+| SVM                 | 0.7757     | 0.7533     | 0.8248     | 0.7875     |
 
-* **Random Forest unggul di seluruh metrik evaluasi** (accuracy, precision, recall, dan F1-score), menjadikannya **pilihan terbaik untuk prediksi kualitas anggur merah**.
-* Nilai **recall yang tinggi (82.48%)** menunjukkan bahwa model ini mampu **mengenali hampir semua sampel anggur berkualitas baik**, yang penting untuk menghindari kegagalan dalam mengidentifikasi produk unggulan selama proses kontrol kualitas.
-* Kombinasi **precision (77.40%) dan F1-score (79.86%)** menunjukkan bahwa model ini **seimbang dan andal**, baik dalam mengidentifikasi anggur berkualitas tinggi maupun menghindari kesalahan dalam klasifikasi, yang sangat berguna bagi produsen dalam menjaga efisiensi dan konsistensi mutu produk tanpa uji rasa manual yang mahal.
+
+
+**Pemilihan Model Terbaik**
+Berdasarkan hasil evaluasi, model **Random Forest** masih menunjukkan performa terbaik di semua metrik utama: accuracy (0.791), precision (0.774), recall (0.825), dan F1-score (0.798). Hal ini mengukuhkan posisinya sebagai pilihan utama untuk prediksi kualitas anggur merah.
+
+Recall yang tinggi (82.5%) mengindikasikan bahwa model ini mampu mengidentifikasi sebagian besar sampel anggur berkualitas baik dengan sangat efektif, yang sangat penting untuk meminimalkan kesalahan dalam proses kontrol kualitas produk unggulan.
+
+Kombinasi precision (77.4%) dan F1-score (79.8%) menunjukkan bahwa model ini tidak hanya andal dalam mendeteksi anggur berkualitas tinggi tetapi juga mampu menjaga keseimbangan antara deteksi positif dan kesalahan klasifikasi.
+
+Dibandingkan dengan model lain, seperti SVM yang meskipun memiliki recall tinggi (87.6%) namun akurasinya rendah (59.3%), dan Logistic Regression yang cukup seimbang namun memiliki performa di bawah Random Forest, model Random Forest menawarkan solusi paling optimal.
+
+Dengan performa ini, Random Forest sangat direkomendasikan untuk digunakan oleh produsen dalam menjaga konsistensi dan efisiensi mutu produk tanpa harus selalu mengandalkan metode uji rasa manual yang memakan waktu dan biaya.
+
+
 
 ### Catatan: Tuning Model
 
@@ -460,12 +475,11 @@ Untuk mengevaluasi performa model dalam tugas klasifikasi biner (kualitas tinggi
 
 Hasil evaluasi dari ketiga model:
 
-| Model               | Accuracy | Precision | Recall | F1-Score |
-|--------------------|----------|-----------|--------|----------|
-| SVM                | 0.593    | 0.561     | **0.876**  | 0.685    |
-| **Random Forest**      | **0.791**    | **0.774**     | 0.825  | **0.798**    |
-| Logistic Regression| 0.750    | 0.741     | 0.774  | 0.757    |
-
+| Model               | Accuracy   | Precision  | Recall     | F1-Score   |
+| ------------------- | ---------- | ---------- | ---------- | ---------- |
+| Logistic Regression | 0.7647     | 0.7589     | 0.7810     | 0.7698     |
+| **Random Forest**   | **0.7904** | **0.7778** | **0.8175** | **0.7972** |
+| SVM                 | 0.7757     | 0.7533     | 0.8248     | 0.7875     |
 ### Pemilihan Model Terbaik
 
 
