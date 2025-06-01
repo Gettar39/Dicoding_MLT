@@ -67,8 +67,9 @@ Dataset ini terdiri dari **1.599 sampel** anggur merah. Setiap baris mewakili sa
 9. **pH**: Tingkat keasaman anggur
 10. **sulphates**: Kandungan sulfat (berkontribusi pada sulfur dioksida)
 11. **alcohol**: Kandungan alkohol (% vol)
-12. **quality_binary**: Skor kualitas anggur (target), dalam skala 0–1, tetapi umumnya antara 3–8. dikecilkan untuk meningkatkan akurasi  ke 0–1 dengan 0 kualitas rendah dan 1 kualitas tinggi
+12. **quality**: Skor kualitas anggur (target)
 
+    
 ### Tahapan Exploratory Data Analysis (EDA)
 Untuk memahami data lebih dalam, beberapa langkah eksplorasi dilakukan, di antaranya:
 
@@ -139,7 +140,7 @@ density                 0
 pH                      0
 sulphates               0
 alcohol                 0
-quality_binary          0
+quality                 0
 dtype: int64
 ```
 
@@ -173,7 +174,7 @@ Baris duplikat:
 1581                 24.0                  32.0  0.99402  3.54       0.60   
 1596                 29.0                  40.0  0.99574  3.42       0.75   
 
-      alcohol  quality_binary  
+      alcohol         quality  
 4         9.4               0  
 11       10.5               0  
 27        9.5               0  
@@ -236,6 +237,8 @@ Langkah-langkah ini penting untuk mengidentifikasi kebutuhan data cleaning dan n
 ## Data Preparation
 
 Tahap ini bertujuan untuk menyiapkan data sebelum digunakan dalam proses pelatihan model machine learning. Berdasarkan hasil eksplorasi awal (EDA) di tahap Data Understanding, terdapat beberapa hal yang perlu diperhatikan dalam proses ini, seperti distribusi fitur yang tidak seragam, dan perbedaan skala antar fitur pada tahap Data Understanding. Oleh karena itu tahap ini akan dilanjutkan dengan proses normalisasi, dan splitting data.
+
+
 ```
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 1599 entries, 0 to 1598
@@ -258,7 +261,7 @@ dtypes: float64(11), int64(1)
 memory usage: 150.0 KB
 ```
 ### Transformasi data
-Kolom **quality** diubah menjadi kolom biner **quality_binary** dengan nilai 0 untuk kualitas rendah (≤5) dan 1 untuk kualitas tinggi (=>6). Hal ini dilakukan untuk menyederhanakan masalah klasifikasi menjadi biner, sehingga model dapat fokus membedakan kualitas baik dan buruk.
+Kolom **quality** diubah menjadi kolom biner **quality_binary** dengan nilai 0 untuk kualitas rendah (<5) dan 1 untuk kualitas tinggi (=>6). Hal ini dilakukan untuk menyederhanakan masalah klasifikasi menjadi biner, sehingga model dapat fokus membedakan kualitas baik dan buruk.
 
 'Jumlah data setelah menghapus duplikat: 1359'
 
